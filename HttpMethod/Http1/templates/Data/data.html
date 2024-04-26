@@ -1,0 +1,40 @@
+{% extends "Data/base.html" %}
+
+{% block content %}
+<table class="table table-borderless">
+    <thead class="border-bottom font-weight-bold">
+        <tr>
+            <td>personid</td>
+            <td>lastname</td>
+            <td>firstname</td>
+            <td>address</td>
+            <td>city</td>
+            <td>
+                <a href="{% url 'Home' %}" class="btn btn-outline-success">Add New</a>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for d in data %}
+            <tr>
+                <td>{{d.personid}}</td>
+                <td>{{d.lastname}}</td>
+                <td>{{d.firstname}}</td>
+                <td>{{d.address}}</td>
+                <td>{{d.city}}</td>
+                <td>
+                    <a href="{% url 'update_data' d.id %}" class="btn text-secondary px-0">
+                        <i class="far fa-edit fa-lg"></i>
+                    </a>
+                    <form action="{% url 'data_delete' d.id %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">
+                            <i class="far fa-trash-alt fa-lg text-danger float-right"></i>
+                        </button>
+                    </form>
+                </td> 
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}
