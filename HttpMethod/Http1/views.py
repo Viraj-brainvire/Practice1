@@ -3,11 +3,15 @@ from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse,HttpResponseNotFound ,JsonResponse
 from .models import data
 from .forms import DataForm
+from django.db import models
+from django.urls import reverse
 import datetime
 # Create your views here.
 def simple(request):
     context = {'data' : data.objects.all()}
     return render(request, "Data/data.html", context)
+
+
 
 @require_http_methods(['GET','POST'])
 def method1(request):
@@ -32,13 +36,13 @@ def method2(request,id=0):
             form = DataForm(request.POST, instance = employee)
         if form.is_valid():
             form.save()
-        return redirect('/Home')
+        return redirect('/list')
 
 
 def method3(request,id):
         employee = data.objects.get(pk = id)
         employee.delete()
-        return redirect('/Home')
+        return redirect('/list')
 
 def my_view(request):
     if id == 0:
@@ -56,3 +60,4 @@ async def current_datetime(request):
     now = datetime.datetime.now()
     html = "<html><body>It is now %s.</body></html>" % now
     return HttpResponse(html)
+
